@@ -1,6 +1,12 @@
 # DirectX 11 Graphics Demo
 This project was built as part of my second year university coursework for CO2409. It extends a base program provided by my tutor which included Direct3D device and swap chain setup, basic rendering pipeline, model loading from file and display. On top of this, I implemented shadow mapping (rendering a depth map from a light's perspective and sampling it in the pixel shader), a static cube map environment (pushing the skybox to the far plane in a vertex shader, wrapping the texture around a cube model), cube map reflections per model (sampling the skybox texture in a pixel shader, outputting a final reflected colour based on a model's reflection strength) and custom HLSL shaders which calculated world positions of the skybox and lights in the vertex shader and their final rendered colour in the pixel shader.
 
+<img src="Screenshots/Overview.png" width="1000"/>
+<div>
+<img src="Screenshots/Shadows.png" width="500" style="display:inline-block"/>
+<img src="Screenshots/CubeMapReflections.png" width="500" style="display:inline-block"/>
+</div>
+
 # Features
 ## Shadow Mapping
 Shadow mapping involved creating a new texture to store the shadow map. Each pixel in this texture would be a single floating point value, instead of four individual R, G, B and A values. The scene is then rendered from the light's perspective and stored in the shadow map. Whether a pixel is in shadow is determined in three steps. First the location of the pixel projected onto the shadow map is determined. Then we compare the stored depth value with the actual distance between the light and the pixel. If the value in the map is less than the actual distance the pixel is shadowed. This determines if the pixel's final colour is affected by the light source.
