@@ -45,6 +45,8 @@ bool LoadShaders()
     gSkyboxVertexShader         = LoadVertexShader ("Skybox_vs");
     gDepthOnlyPixelShader       = LoadPixelShader ("DepthOnly_ps");
 
+
+
     if (gPixelLightingVertexShader  == nullptr || gPixelLightingPixelShader == nullptr ||
         gBasicTransformVertexShader == nullptr || gLightModelPixelShader    == nullptr)
     {

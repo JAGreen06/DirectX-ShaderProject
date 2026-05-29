@@ -1,36 +1,18 @@
-//--------------------------------------------------------------------------------------
-// Light Model Pixel Shader
-//--------------------------------------------------------------------------------------
-// Pixel shader simply samples a diffuse texture map and tints with a fixed colour sent over from the CPU via a constant buffer
+/*SKYBOX PIXEL SHADER*/
 
-#include "Common.hlsli" // Shaders can also use include files - note the extension
+#include "Common.hlsli" 
 
-
-//--------------------------------------------------------------------------------------
-// Textures (texture maps)
-//--------------------------------------------------------------------------------------
-
-// Here we allow the shader access to a texture that has been loaded from the C++ side and stored in GPU memory.
-// Note that textures are often called maps (because texture mapping describes wrapping a texture round a mesh).
-// Get used to people using the word "texture" and "map" interchangably.
-TextureCube DiffuseMap : register(t0); // A diffuse map is the main texture for a model.
-                                        // The t0 indicates this texture is in slot 0 and the C++ code must load the texture into the this slot
-SamplerState TexSampler : register(s0); // A sampler is a filter for a texture like bilinear, trilinear or anisotropic
+TextureCube DiffuseMap : register(t0); // Texture Cube for the skybox, passed from C++
+                                        
+SamplerState TexSampler : register(s0); // Skybox Sampler, passed from C++
 
 
-//--------------------------------------------------------------------------------------
-// Shader code
-//--------------------------------------------------------------------------------------
-
-// Pixel shader entry point - each shader has a "main" function
-// This shader just samples a diffuse texture map
 float4 main(SimplePixelShaderInput input) : SV_Target
 {
-    // Sample diffuse material colour for this pixel from a texture using a given sampler that you set up in the C++ code
-    // Ignoring any alpha in the texture, just reading RGB
-    float3 diffuseMapColour = DiffuseMap.Sample(TexSampler, input.worldPosition);
+    // Sample diffuse material colour for this pixel from a texture cube using a sampler setup in C++.
+    // Sampled using a 3D direction vector, rather than UV coordinates. 
+    // WorldPosition is used as skybox is centred around the camera.
+    float3 finalColour = DiffuseMap.Sample(TexSampler, input.worldPosition); 
      
-    float3 finalColour = diffuseMapColour;
-
-    return float4(finalColour, 1.0f); // Always use 1.0f for alpha - no alpha blending in this lab
+    return float4(finalColour, 1.0f);
 }

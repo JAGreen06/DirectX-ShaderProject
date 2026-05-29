@@ -1,42 +1,27 @@
-//--------------------------------------------------------------------------------------
-// Light Model Pixel Shader
-//--------------------------------------------------------------------------------------
-// Pixel shader simply samples a diffuse texture map and tints with a fixed colour sent over from the CPU via a constant buffer
+/*TEAPOT PIXEL SHADER*/
 
-#include "Common.hlsli" // Shaders can also use include files - note the extension
+#include "Common.hlsli"
 
-
-//--------------------------------------------------------------------------------------
-// Textures (texture maps)
-//--------------------------------------------------------------------------------------
-
-// Here we allow the shader access to a texture that has been loaded from the C++ side and stored in GPU memory.
-// Note that textures are often called maps (because texture mapping describes wrapping a texture round a mesh).
-// Get used to people using the word "texture" and "map" interchangably.
-Texture2D DiffuseMap : register(t0); // A diffuse map is the main texture for a model.
-                                        // The t0 indicates this texture is in slot 0 and the C++ code must load the texture into the this slot
-SamplerState TexSampler : register(s0); // A sampler is a filter for a texture like bilinear, trilinear or anisotropic
+Texture2D DiffuseMap : register(t0); //Teapot texture, passed from C++.
+                                        
+SamplerState TexSampler : register(s0); // Anisotripic filtering, high quality texture filtering. (Defined in C++)
 
 
-//--------------------------------------------------------------------------------------
-// Shader code
-//--------------------------------------------------------------------------------------
-
-// Pixel shader entry point - each shader has a "main" function
-// This shader just samples a diffuse texture map
 float4 main(SimplePixelShaderInput input) : SV_Target
 {
-    // Sample diffuse material colour for this pixel from a texture using a given sampler that you set up in the C++ code
-    // Ignoring any alpha in the texture, just reading RGB
+    // Sample diffuse material colour for this pixel from a texture using a given sampler.
     float3 diffuseMapColour = DiffuseMap.Sample(TexSampler, input.uv).rgb;
     
-    // Blend texture colour with fixed per-object colour
-    float red = (sin(gTime) + 1.0f) / 2.0f;
+    // Equation for smooth changing of colours, gTime passed via constant buffer from C++.
+    float red = (sin(gTime) + 1.0f) / 2.0f; 
     float green = (sin(gTime * 0.7f) + 1.0f) / 2.0f;
     float blue = (sin(gTime * 1.3f) + 1.0f) / 2.0f;
     
+    // Combine each individual colour channel into one final colour.
     float3 colours = float3(red, green, blue);
+    
+    // modulates texture colour with colour outputted from smooth changing formula.
     float3 finalColour = diffuseMapColour * colours;
 
-    return float4(finalColour, 1.0f); // Always use 1.0f for alpha - no alpha blending in this lab
+    return float4(finalColour, 1.0f);
 }

@@ -1,8 +1,7 @@
-//--------------------------------------------------------------------------------------
-// Common include file for all shaders
-//--------------------------------------------------------------------------------------
-// Using include files to define the type of data passed between the shaders
-
+// Base file provided as part of CO2409 coursework.
+// Additions to constant buffers (gLight3Facing, gLight3CosHalfAngle, 
+// gLight3ViewMatrix, gLight3ProjectionMatrix, gTime, gReflectivity) 
+// Supports shadow mapping, reflections and animated colour shaders.
 
 //--------------------------------------------------------------------------------------
 // Shader input / output
@@ -68,8 +67,8 @@ cbuffer PerFrameConstants : register(b0) // The b0 gives this constant buffer th
     float4x4 gProjectionMatrix;
     float4x4 gViewProjectionMatrix; // The above two matrices multiplied together to combine their effects
 
-    float3   gLight1Position; // 3 floats: x, y z
-    float    padding1;        // Pad above variable to float4 (HLSL requirement - copied in the the C++ version of this structure)
+    float3   gLight1Position;
+    float    padding1;        
     float3   gLight1Colour;
     float    padding2;
 
@@ -94,7 +93,7 @@ cbuffer PerFrameConstants : register(b0) // The b0 gives this constant buffer th
     float3   gCameraPosition;
     float    padding7;
     
-    float    gTime;
+    float    gTime; // Passed from C++, updated constantly per frame, used for sin wave colour method.
     float3   padding8;
 }
 // Note constant buffers are not structs: we don't use the name of the constant buffer, these are really just a collection of global variables (hence the 'g')
@@ -112,6 +111,6 @@ cbuffer PerModelConstants : register(b1) // The b1 gives this constant buffer th
     float3   gObjectColour;
     float    padding9;  // See notes on padding in structure above
     
-    float    gReflectivity;
+    float    gReflectivity; // Used to control individual model reflectivity.
     float3   padding10;
 }
