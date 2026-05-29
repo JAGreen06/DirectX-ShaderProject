@@ -1,10 +1,16 @@
-# DirectX 11 Graphics Demo
-This project was built as part of my second year university coursework for CO2409. It extends a base program provided by my tutor which included Direct3D device and swap chain setup, basic rendering pipeline, model loading from file and display. On top of this, I implemented shadow mapping (rendering a depth map from a light's perspective and sampling it in the pixel shader), a static cube map environment (pushing the skybox to the far plane in a vertex shader, wrapping the texture around a cube model), cube map reflections per model (sampling the skybox texture in a pixel shader, outputting a final reflected colour based on a model's reflection strength) and custom HLSL shaders which calculated world positions of the skybox and lights in the vertex shader and their final rendered colour in the pixel shader.
+![Language](https://img.shields.io/badge/Language-C%2B%2B-blue)
+![API](https://img.shields.io/badge/API-DirectX%2011-blue)
+![IDE](https://img.shields.io/badge/IDE-Visual%20Studio%202022-purple)
 
-<img src="Screenshots/Overview.png" width="1000"/>
+# DirectX 11 Graphics Demo
+This project was built as part of my second year university coursework for CO2409. It extends a base program provided by my tutor which included Direct3D device and swap chain setup, basic rendering pipeline, model loading from file and display.
+
+On top of this, I implemented shadow mapping (rendering a depth map from a light's perspective and sampling it in the pixel shader), a static cube map environment (pushing the skybox to the far plane in a vertex shader, wrapping the texture around a cube model), cube map reflections per model (sampling the skybox texture in a pixel shader, outputting a final reflected colour based on a model's reflection strength) and custom HLSL shaders which calculated world positions of the skybox and lights in the vertex shader and their final rendered colour in the pixel shader.
+
+<img src="Screenshots/Overview.png" width="800"/>
 <div>
-<img src="Screenshots/Shadows.png" width="500" style="display:inline-block"/>
-<img src="Screenshots/CubeMapReflections.png" width="500" style="display:inline-block"/>
+<img src="Screenshots/Shadows.png" width="400" style="display:inline-block"/>
+<img src="Screenshots/CubeMapReflections.png" width="400" style="display:inline-block"/>
 </div>
 
 # Features
@@ -37,6 +43,38 @@ Per-pixel lighting was used in the program for its more realistic lighting compa
 
 # Known Issues
 Two shader warnings appear on build (X3578, X3206) but don't affect functionality.
+
+# Attribution
+  
+## My Work
+The following files were written by me as extensions to the base program:
+
+- `Scene.cpp` — Shadow mapping pipeline, spotlight setup, scene initialisation and render loop
+- `PixelLighting_ps.hlsl` — Per-pixel lighting pixel shader including Blinn-Phong specular, shadow map sampling, and cube map reflections
+- `PixelLighting_vs.hlsl` — Per-pixel lighting vertex shader
+- `Skybox_ps.hlsl` — Skybox pixel shader
+- `Skybox_vs.hlsl` — Skybox vertex shader  
+- `BasicTransform_vs.hlsl` — Basic transform vertex shader used for the shadow depth pass and light models
+- `TeapotShader_ps.hlsl` — Animated colour pixel shader
+- `Light.cpp / Light.h` — Light class including colour cycling and toggle behaviour
+- `Common.hlsli` — Partial. Added spotlight and shadow map variables 
+to constant buffers (gLight3Facing, gLight3CosHalfAngle, 
+gLight3ViewMatrix, gLight3ProjectionMatrix, gTime, gReflectivity)
+
+## Provided by Coursework
+The following files were provided as part of CO2409 and written by my tutor:
+
+- `Direct3DSetup.cpp / .h` — Device and swap chain initialisation
+- `Camera.cpp / .h` — Camera class
+- `Mesh.cpp / .h` — Mesh loading and rendering
+- `Model.cpp / .h` — Model class
+- `Shader.cpp / .h` — Shader loading
+- `State.cpp / .h` — Render state setup
+- `DepthOnly_ps.hlsl` — Depth only pixel shader
+- `LightModel_ps.hlsl` — Light model pixel shader
+- `Common.hlsli` — Base structure and original constant buffer layout
+- `Utility/` — Helper functions including GraphicsHelpers
+- `Math/` — Helper functions including MathHelpers
 
 # References
 - *Luna's Introduction to 3D Game Programming with DirectX 11*
